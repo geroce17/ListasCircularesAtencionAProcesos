@@ -28,11 +28,11 @@ namespace LC___Atencion_a_procesos
                 R = probabilidad.Next(1, 5);
                 if (procesador.inicio != null)
                     procesador.eliminarProceso();
-                //if (R == 4)
-                //{
+                if (R == 4)
+                {
                     procesador.crearProceso();
                     NoProcess++;
-                //}
+                }
                 if (procesador.inicio == null)
                     empty++;
                 if (cont > 8)

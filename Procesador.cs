@@ -23,7 +23,7 @@ namespace LC___Atencion_a_procesos
             NoProceso++;
             Proceso nuevo = new Proceso();
             nuevo.nombre = Convert.ToString("Proceso " + NoProceso);
-            nuevo.ciclos = ciclos.Next(2, 6);
+            nuevo.ciclos = ciclos.Next(4,12);
             if (inicio == null)
             {
                 nuevo.siguiente = nuevo;
@@ -39,7 +39,7 @@ namespace LC___Atencion_a_procesos
                     actual = actual.siguiente;
                 }
                 nuevo.siguiente = inicio;
-                nuevo.anterior = final;
+                nuevo.anterior = inicio.anterior;
                 nuevo.anterior.siguiente = nuevo;
                 final = nuevo;
                 inicio.anterior = final;
@@ -47,84 +47,22 @@ namespace LC___Atencion_a_procesos
         }
         public void eliminarProceso()
         {
-            //----------Se resta en uno los ciclos de cada instancia----------------------------------
-            actual = inicio;
-            actual.ciclos--;
-            actual = actual.siguiente;
-            while (actual != inicio)
+            if (inicio != null)
             {
-                actual.ciclos--;
-                actual = actual.siguiente;
-            }
+                inicio.ciclos--;
 
-            //---------------Se inicia a eliminar las instancias con ciclos en ceros-----------------
-
-            actual = inicio;
-            if (inicio.ciclos == 0)
-            {
-                completed++;
-                if (inicio == final)
+                if (inicio.ciclos == 0)
                 {
-                    inicio = null;
-                    final = inicio;
-                    actual = inicio;
-                }
-                else
-                {
-                    actual = actual.siguiente;
-                    while (actual.ciclos == 0 && actual != inicio)
+                    if (inicio.siguiente != inicio)
                     {
-                        actual = actual.siguiente;
-                        completed++;
-                    }
-                    if (actual == final)
-                    {
-                        inicio = actual;
-                        inicio.siguiente = inicio;
-                        inicio.anterior = inicio;
-                        final = inicio;
-                    }
-                    else
-                    {
-                        inicio = actual;
-                        inicio.anterior = final;
-                        final.siguiente = inicio;
-                        actual = actual.siguiente;
-                    }
-                }
-            }
-            else
-                actual = actual.siguiente;
-
-            while (actual != null && actual!=inicio)
-            {
-                if (actual.ciclos == 0)
-                {
-                    if (inicio == final)
-                    {
-                        inicio = null;
-                        final = inicio;
-                        actual = inicio;
-                    }
-                    else
-                    {
-                        if (actual == final)
-                        {
-                            final = final.anterior;
-                            final.siguiente = inicio;
-                            inicio.anterior = final;
-                        }
-                        else
-                        {
-                            actual.siguiente.anterior = actual.anterior;
-                            actual.anterior.siguiente = actual.siguiente;
-                        }
+                        inicio.siguiente.anterior = inicio.anterior;
+                        inicio.anterior.siguiente = inicio.siguiente;
+                        inicio = inicio.siguiente;
                     }
                     completed++;
                 }
-                if (actual != null)
-                    actual = actual.siguiente;
             }
+            inicio = inicio.siguiente;
         }
 
         public void pendientesSuma()
